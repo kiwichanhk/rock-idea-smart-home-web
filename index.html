@@ -1,60 +1,543 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>丸石智能家居 | Maruishi Smart Home</title>
-    <!-- Tailwind CDN for simplicity -->
+    <meta name="description" content="專業智能家居安裝、設定及維護。打造舒適、安全、高效的居住環境。" />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            colors: {
-              tech: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                800: '#075985',
-                900: '#0c4a6e',
-                950: '#082f49',
-              },
-              primary: '#0f172a', // Slate 900
-              secondary: '#1e293b', // Slate 800
-              accent: '#38bdf8', // Sky 400
-            },
             fontFamily: {
-              sans: ['Inter', 'Microsoft JhengHei', 'sans-serif'],
+              sans: ['"Noto Sans HK"', 'Inter', 'sans-serif'],
             },
-            animation: {
-              'fade-in-up': 'fadeInUp 0.8s ease-out',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-            },
-          },
-        },
-      };
+            colors: {
+              brand: {
+                dark: '#0f172a', // Slate 900
+                blue: '#0ea5e9', // Sky 500
+                accent: '#22d3ee', // Cyan 400
+                surface: '#1e293b', // Slate 800
+              }
+            }
+          }
+        }
+      }
     </script>
     <style>
-      /* Smooth scrolling for anchor links */
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: 5rem;
       }
       body {
         background-color: #0f172a;
-        color: #f1f5f9;
+        color: #f8fafc;
+      }
+      /* Custom Animations */
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
       }
     </style>
-
-  <script type="module" crossorigin src="./assets/index-DsaV63w7.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+  }
+}
+</script>
 </head>
-  <body>
-    <div id="root"></div>
+  <body class="antialiased selection:bg-brand-accent selection:text-brand-dark">
+    
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 flex items-center gap-2 text-white font-bold text-xl tracking-wider cursor-pointer" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              <i data-lucide="home" class="h-8 w-8 text-brand-accent"></i>
+              <span>丸石智能家居</span>
+            </div>
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a href="#services" class="text-gray-300 hover:text-brand-accent hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">主要業務</a>
+              <a href="#linkage" class="text-gray-300 hover:text-brand-accent hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">智能聯動</a>
+              <a href="#scenarios" class="text-gray-300 hover:text-brand-accent hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">實際應用</a>
+              <a href="#pricing" class="text-gray-300 hover:text-brand-accent hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">價格參考</a>
+              <a href="#case-study" class="text-gray-300 hover:text-brand-accent hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">真實案例</a>
+              <a href="#contact" class="text-gray-300 hover:text-brand-accent hover:bg-white/10 px-3 py-2 rounded-md text-sm font-medium transition-colors">聯絡我們</a>
+            </div>
+          </div>
+          <div class="-mr-2 flex md:hidden">
+            <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+              <i data-lucide="menu" class="h-6 w-6"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-brand-surface border-t border-gray-700">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="#services" class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">主要業務</a>
+          <a href="#linkage" class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">智能聯動</a>
+          <a href="#scenarios" class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">實際應用</a>
+          <a href="#pricing" class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">價格參考</a>
+          <a href="#case-study" class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">真實案例</a>
+          <a href="#contact" class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">聯絡我們</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 z-0 pointer-events-none">
+        <img src="https://images.unsplash.com/photo-1558002038-1091a166111c?q=80&w=2070&auto=format&fit=crop" alt="Smart Home Interior" class="w-full h-full object-cover opacity-40" />
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/80 via-brand-dark/60 to-brand-dark"></div>
+      </div>
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl sm:text-6xl font-bold text-white mb-6 tracking-tight">
+          丸石智能家居
+          <span class="block text-brand-accent text-2xl sm:text-3xl mt-2 font-light">Maruishi Smart Home</span>
+        </h1>
+        <p class="mt-4 text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          透過現代科技，創造一個舒適、安全且高效的居住環境。<br class="hidden sm:block" />讓每位客戶都能輕鬆享受智慧生活的便利。
+        </p>
+        <div class="mt-10 flex justify-center gap-4">
+          <a href="#contact" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-brand-dark bg-brand-accent hover:bg-brand-blue transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] cursor-pointer">
+            立即諮詢
+            <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+          </a>
+          <a href="#pricing" class="inline-flex items-center px-8 py-3 border border-gray-500 text-base font-medium rounded-full text-white hover:bg-white/10 transition-all cursor-pointer">
+            查看價格
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <section id="services" class="py-20 bg-brand-dark relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-white mb-4">主要業務與設備</h2>
+          <div class="w-20 h-1 bg-brand-accent mx-auto rounded-full"></div>
+          <p class="mt-4 text-gray-400">一站式智能家居解決方案</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+          <div class="bg-brand-surface p-8 rounded-2xl border border-gray-700 hover:border-brand-accent/50 transition-all duration-300">
+            <div class="w-14 h-14 bg-brand-blue/20 rounded-xl flex items-center justify-center mb-6 text-brand-accent">
+              <i data-lucide="settings" class="h-8 w-8"></i>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">安裝及設定</h3>
+            <p className="text-gray-400">專業團隊上門安裝智能家居系統，確保設備完美聯動。</p>
+          </div>
+          <div class="bg-brand-surface p-8 rounded-2xl border border-gray-700 hover:border-brand-accent/50 transition-all duration-300">
+            <div class="w-14 h-14 bg-brand-blue/20 rounded-xl flex items-center justify-center mb-6 text-brand-accent">
+              <i data-lucide="wrench" class="h-8 w-8"></i>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3">更新及維護</h3>
+            <p className="text-gray-400">提供系統更新與定期維護服務，保持系統穩定運行。</p>
+          </div>
+        </div>
+
+        <div class="bg-brand-surface/50 rounded-3xl p-8 sm:p-12">
+          <h3 class="text-2xl font-bold text-white mb-8 text-center">現有聯動設備</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="lock" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">智能門鎖 (遙距)</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="lightbulb" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">燈具開關</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="tv" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">電器聯動</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="wind" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">窗簾/窗戶 (雨水)</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="user" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">人體存在感應</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="droplet" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">智能關閉來水</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="power" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">智能斷阻電源</span>
+            </div>
+            <div class="flex flex-col items-center text-center p-4 rounded-xl bg-brand-dark/50 hover:bg-brand-blue/10 transition-colors">
+              <i data-lucide="shield-check" class="h-8 w-8 text-brand-accent mb-3"></i>
+              <span class="text-sm sm:text-base text-gray-300 font-medium">安全警報系統</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Smart Linkage -->
+    <section id="linkage" class="py-20 bg-gradient-to-b from-brand-dark to-brand-surface">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-white mb-4">智能聯動場景</h2>
+          <p class="text-gray-400">簡單邏輯，實現強大自動化</p>
+        </div>
+
+        <!-- Scenario 1 -->
+        <div class="mb-20">
+          <div class="bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-700">
+            <div class="p-8 md:p-12">
+              <h3 class="text-2xl font-bold text-white mb-8 border-l-4 border-green-500 pl-4">
+                節能與自動化：冷氣風扇聯動
+              </h3>
+              <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+                <div class="flex flex-col items-center">
+                  <div class="w-48 h-32 bg-slate-700 rounded-lg overflow-hidden relative group">
+                    <img src="https://images.unsplash.com/photo-1617105345788-51f727c975ab?auto=format&fit=crop&q=80&w=300" alt="Air Conditioner" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  </div>
+                  <p class="mt-3 text-gray-300 font-medium">冷氣 / 風扇</p>
+                </div>
+                <div class="text-brand-accent">
+                  <i data-lucide="plus" class="h-12 w-12" stroke-width="4"></i>
+                </div>
+                <div class="flex flex-col items-center">
+                  <div class="w-32 h-32 bg-slate-700 rounded-full flex items-center justify-center relative shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                     <div class="w-16 h-16 bg-white rounded-full opacity-90"></div>
+                     <div class="absolute inset-0 border-2 border-green-400 rounded-full animate-pulse"></div>
+                  </div>
+                  <p class="mt-3 text-gray-300 font-medium">人體存在感應 / 雷達</p>
+                </div>
+                <div class="text-green-500 hidden md:block">
+                  <i data-lucide="arrow-right" class="h-12 w-12" stroke-width="3"></i>
+                </div>
+                <div class="text-green-500 md:hidden block rotate-90 my-2">
+                  <i data-lucide="arrow-right" class="h-12 w-12" stroke-width="3"></i>
+                </div>
+                <div class="bg-green-600/20 border border-green-500/50 p-6 rounded-xl text-center max-w-xs">
+                  <h4 class="text-xl font-bold text-green-400 mb-2">實現功能</h4>
+                  <ul class="text-gray-200 text-sm space-y-2 text-left list-disc pl-4">
+                    <li>無人時自動關閉冷氣</li>
+                    <li>有人時維持運作</li>
+                    <li>遠程控制開關</li>
+                    <li>定時開關</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario 2 -->
+        <div>
+          <div class="bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-700">
+            <div class="p-8 md:p-12">
+              <h3 class="text-2xl font-bold text-white mb-8 border-l-4 border-red-500 pl-4">
+                家居安全：防水浸系統
+              </h3>
+              <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+                <div class="flex flex-col items-center">
+                   <div class="w-32 h-32 bg-slate-700 rounded-xl flex items-center justify-center relative">
+                     <div class="w-20 h-10 bg-white rounded-full shadow-lg"></div>
+                     <div class="absolute -bottom-2 text-blue-400 font-bold">1mm</div>
+                     <span class="absolute top-2 right-2 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                     </span>
+                  </div>
+                  <p class="mt-3 text-gray-300 font-medium">水浸傳感器</p>
+                </div>
+                <div class="text-brand-accent">
+                  <i data-lucide="plus" class="h-12 w-12" stroke-width="4"></i>
+                </div>
+                <div class="flex flex-col items-center">
+                  <div class="w-32 h-32 bg-slate-700 rounded-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1585909695284-32d2985ac9c0?auto=format&fit=crop&q=80&w=300" alt="Smart Valve" class="w-full h-full object-cover" />
+                  </div>
+                  <p class="mt-3 text-gray-300 font-medium">智能出水閥</p>
+                </div>
+                <div class="text-red-500 hidden md:block">
+                   <i data-lucide="arrow-right" class="h-12 w-12" stroke-width="3"></i>
+                </div>
+                <div class="text-red-500 md:hidden block rotate-90 my-2">
+                   <i data-lucide="arrow-right" class="h-12 w-12" stroke-width="3"></i>
+                </div>
+                <div class="bg-red-600/20 border border-red-500/50 p-6 rounded-xl text-center max-w-xs w-full">
+                  <h4 class="text-xl font-bold text-red-400 mb-2">警報觸發</h4>
+                  <div class="text-white font-bold text-lg mb-2">偵測到地面有水</div>
+                  <div class="animate-bounce text-2xl mb-2">↓↓↓</div>
+                  <div class="bg-red-600 text-white py-2 px-4 rounded-lg font-bold">自動關閉來水喉</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scenarios (Cards) -->
+    <section id="scenarios" class="py-20 bg-brand-surface">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-white mb-4">實際應用場景</h2>
+          <p className="text-gray-400">為家中電器及照明系統建立智能大腦</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div class="bg-brand-dark p-8 rounded-2xl border border-gray-800 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)] transition-shadow">
+            <div class="flex items-center gap-3 mb-6 text-yellow-400">
+              <i data-lucide="zap" class="h-7 w-7"></i>
+              <h3 class="text-xl font-bold text-white">電器自動化</h3>
+            </div>
+            <div class="space-y-6">
+              <div><h4 class="text-brand-blue font-medium mb-1">照明系統</h4><p class="text-gray-400 text-sm leading-relaxed">回家自動開燈，離家自動全關。人在燈亮，人走燈滅。</p></div>
+              <div><h4 class="text-brand-blue font-medium mb-1">冷氣風扇</h4><p class="text-gray-400 text-sm leading-relaxed">利用雷達感應，無人時自動關閉冷氣及風扇，有效節省開支。</p></div>
+              <div><h4 class="text-brand-blue font-medium mb-1">監察用電</h4><p class="text-gray-400 text-sm leading-relaxed">實時監察電器用電是否正常，預防異常耗電。</p></div>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="bg-brand-dark p-8 rounded-2xl border border-gray-800 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)] transition-shadow">
+            <div class="flex items-center gap-3 mb-6 text-orange-400">
+              <i data-lucide="sun" class="h-7 w-7"></i>
+              <h3 class="text-xl font-bold text-white">窗簾與窗戶</h3>
+            </div>
+            <div class="space-y-6">
+              <div><h4 class="text-brand-blue font-medium mb-1">定時開關</h4><p class="text-gray-400 text-sm leading-relaxed">設定時間自動開關窗戶與窗簾，享受清晨陽光。</p></div>
+              <div><h4 class="text-brand-blue font-medium mb-1">雨水感應</h4><p class="text-gray-400 text-sm leading-relaxed">下雨時自動關窗，解決打風撇雨及出門忘記關窗的煩惱。</p></div>
+              <div><h4 class="text-brand-blue font-medium mb-1">生活品質</h4><p class="text-gray-400 text-sm leading-relaxed">提升生活幸福感，讓家更懂你的作息。</p></div>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="bg-brand-dark p-8 rounded-2xl border border-gray-800 hover:shadow-[0_0_20px_rgba(14,165,233,0.1)] transition-shadow">
+            <div class="flex items-center gap-3 mb-6 text-red-400">
+              <i data-lucide="shield" class="h-7 w-7"></i>
+              <h3 class="text-xl font-bold text-white">警報安全</h3>
+            </div>
+            <div class="space-y-6">
+              <div><h4 class="text-brand-blue font-medium mb-1">環境監測</h4><p class="text-gray-400 text-sm leading-relaxed">溫度濕度過高自動開冷氣/抽濕。空氣質量差自動開抽氣。</p></div>
+              <div><h4 class="text-brand-blue font-medium mb-1">防災系統</h4><p class="text-gray-400 text-sm leading-relaxed">煙霧感應聯動警報。水浸感應自動聯動出水閥關水。</p></div>
+              <div><h4 class="text-brand-blue font-medium mb-1">即時反應</h4><p class="text-gray-400 text-sm leading-relaxed">有效預防火災水浸，保障家人財產安全。</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Case Study -->
+    <section id="case-study" class="py-20 bg-brand-surface">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-white mb-4">真實案例</h2>
+          <p class="text-xl text-brand-accent">旺角 460尺 2房住宅單位</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="bg-white/5 p-4 rounded-3xl relative h-96 w-full shadow-inner flex items-center justify-center border border-gray-700">
+             <div class="text-center">
+                <svg class="w-48 h-48 mx-auto text-gray-600 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M3 10v11h6v-7h6v7h6v-11L12 3z" />
+                    <rect x="5" y="12" width="4" height="4" />
+                    <rect x="15" y="12" width="4" height="4" />
+                </svg>
+                <p class="text-gray-400">2房住宅平面圖示意</p>
+             </div>
+             <div class="absolute top-10 left-10 bg-brand-blue text-white text-xs px-2 py-1 rounded-full animate-pulse">客廳</div>
+             <div class="absolute bottom-10 right-10 bg-brand-blue text-white text-xs px-2 py-1 rounded-full animate-pulse">睡房</div>
+             <div class="absolute bottom-10 left-20 bg-brand-blue text-white text-xs px-2 py-1 rounded-full animate-pulse">廚房</div>
+          </div>
+          <div class="space-y-6">
+            <div class="bg-brand-dark p-6 rounded-xl border border-gray-800">
+              <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-700 pb-2">費用清單</h3>
+              <div class="space-y-4 text-sm sm:text-base">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 class="text-brand-blue font-bold mb-1">客廳</h4>
+                    <ul class="text-gray-400 list-disc list-inside space-y-1">
+                      <li>客廳主控台: $700</li>
+                      <li>智能門鎖: $3000</li>
+                      <li>客廳燈+飯廳燈: $800</li>
+                      <li>冷氣一套: $500</li>
+                      <li>人體感應: $300</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="text-brand-blue font-bold mb-1">睡房 (1 & 2)</h4>
+                    <ul class="text-gray-400 list-disc list-inside space-y-1">
+                      <li>燈 (x2): $800</li>
+                      <li>冷氣一套 (x2): $1000</li>
+                      <li>人體感應 (x2): $600</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                  <div>
+                     <h4 class="text-brand-blue font-bold mb-1">洗手間</h4>
+                    <ul class="text-gray-400 list-disc list-inside space-y-1">
+                      <li>燈 + 抽氣: $600</li>
+                      <li>人體感應: $300</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="text-brand-blue font-bold mb-1">廚房</h4>
+                     <ul class="text-gray-400 list-disc list-inside space-y-1">
+                      <li>燈: $400</li>
+                      <li>抽油煙機: $300</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-gray-700 flex justify-between items-center">
+                <span class="text-white font-medium">總費用</span>
+                <span className="text-3xl font-bold text-brand-accent">$10,100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 bg-brand-dark">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-white mb-4">價目參考</h2>
+          <p class="text-gray-400 mb-2">以下價錢僅供參考，需要按實際需求而定</p>
+          <p class="text-brand-accent text-sm font-medium">參考價錢已連工包料</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Items -->
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">主控台</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$700</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">智能門鎖</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$3000</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">燈具開關</h3><span class="text-xs text-gray-500 block">(不連燈具)</span></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$400</span><span class="text-xs text-gray-500 block">每支燈</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">冷氣開關</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$500</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">窗户開關連雨水感應</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$2000</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">窗簾開關</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$600</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">人體存在感應</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$300</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+          <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">煙霧感應</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$300</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+           <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">水浸感應+出水閥</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$1200</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+           <div class="flex justify-between items-center bg-brand-surface p-6 rounded-lg border-l-4 border-brand-blue hover:bg-slate-800 transition-colors">
+            <div><h3 class="text-lg font-bold text-white">其他電器</h3></div>
+            <div class="text-right"><span class="text-2xl font-bold text-brand-accent">$300-800</span><span class="text-xs text-gray-500 block">每套</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <footer id="contact" class="bg-slate-950 py-16 border-t border-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12">
+          <div>
+            <h2 class="text-3xl font-bold text-white mb-6">聯絡我們</h2>
+            <p class="text-gray-400 mb-8 max-w-md">想為您的家居升級？歡迎隨時聯絡我們查詢報價或預約上門考察。丸石智能家居團隊竭誠為您服務。</p>
+            <div class="flex items-center gap-2 mb-4">
+               <span class="text-2xl font-bold text-white tracking-wider">丸石智能家居</span>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <a href="mailto:kiwichan@planherohk.com" class="flex items-center p-6 bg-brand-surface rounded-xl hover:bg-brand-surface/80 transition-colors group">
+              <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                <i data-lucide="mail"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm text-gray-400">電郵 Email</p>
+                <p class="text-lg font-medium text-white break-all">kiwichan@planherohk.com</p>
+              </div>
+            </a>
+            <a href="https://wa.me/85267128323" target="_blank" rel="noreferrer" class="flex items-center p-6 bg-brand-surface rounded-xl hover:bg-brand-surface/80 transition-colors group">
+              <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-white transition-all">
+                <i data-lucide="message-circle"></i>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm text-gray-400">電話 / WhatsApp</p>
+                <p class="text-lg font-medium text-white">6712 - 8323</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="mt-16 pt-8 border-t border-gray-900 text-center text-gray-600 text-sm">
+          <p>&copy; <script>document.write(new Date().getFullYear())</script> 丸石智能家居 Maruishi Smart Home. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Init Scripts -->
+    <script>
+      // Initialize Lucide Icons
+      lucide.createIcons();
+
+      // Mobile Menu Logic
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const icon = btn.querySelector('i');
+
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+
+      // Close menu when clicking links
+      menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.add('hidden');
+        });
+      });
+
+      // Navbar Scroll Effect
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+          navbar.classList.add('bg-brand-dark/95', 'shadow-lg', 'backdrop-blur-sm');
+          navbar.classList.remove('bg-transparent');
+        } else {
+          navbar.classList.remove('bg-brand-dark/95', 'shadow-lg', 'backdrop-blur-sm');
+          navbar.classList.add('bg-transparent');
+        }
+      });
+    </script>
   </body>
 </html>
